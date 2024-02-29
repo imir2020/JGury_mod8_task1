@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -17,7 +18,7 @@ import java.util.Optional;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-@ToString
+@Transactional(readOnly = true)
 public class UserService {
 
     private final UserRepository userRepository;
@@ -36,6 +37,7 @@ public class UserService {
 
     }
 
+    @Transactional
     public UserReadDto create(UserCreateEditDto userDto){
         return Optional.of(userDto)
                 .map(userCreateEditMapper::map)
