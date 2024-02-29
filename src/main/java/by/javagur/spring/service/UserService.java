@@ -46,6 +46,7 @@ public class UserService {
                 .orElseThrow();
     }
 
+    @Transactional
     public Optional<UserReadDto> update(Long id, UserCreateEditDto userDto){
         return userRepository.findById(id)
                 .map(entity -> userCreateEditMapper.map(userDto, entity))
@@ -53,6 +54,7 @@ public class UserService {
                 .map(userReadMapper::map);
     }
 
+    @Transactional
     public boolean delete(Long id) {
         return userRepository.findById(id)
                 .map(entity -> {
