@@ -37,6 +37,10 @@ public class UserService {
 
     }
 
+    public Optional<UserReadDto> findByName(String userName){
+        return userRepository.findByUsername(userName).map(userReadMapper::map);
+    }
+
     @Transactional
     public UserReadDto create(UserCreateEditDto userDto){
         return Optional.of(userDto)

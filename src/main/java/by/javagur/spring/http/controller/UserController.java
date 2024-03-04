@@ -1,19 +1,26 @@
 package by.javagur.spring.http.controller;
 
+import by.javagur.spring.database.entity.Company;
+import by.javagur.spring.database.entity.Role;
 import by.javagur.spring.dto.UserCreateEditDto;
+import by.javagur.spring.dto.UserReadDto;
+import by.javagur.spring.service.CompanyService;
 import by.javagur.spring.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 @Controller
 @RequestMapping("/users")
 @RequiredArgsConstructor
 public class UserController {
     private final UserService userService;
+    private final CompanyService companyService;
 
-    @GetMapping("/users")
+    @GetMapping("/users")//delete this path
     public String findAll(Model model) {
         model.addAttribute("users", userService.findAll());
         return "user/users";
@@ -21,14 +28,20 @@ public class UserController {
 
     @GetMapping("/{id}")
     public String findById(@PathVariable("id") Long id, Model model) {
-        model.addAttribute("user", userService.findById(id));
-        return "user/user";
+        return userService.findById(id)
+                .map(user -> {
+                    model.addAttribute("user", user);
+                    model.addAttribute("roles", Role.values());
+                    model.addAttribute("companies", companyService.findAll());
+                    return "user/user";
+                })
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
 
     @PostMapping
     public String create(@ModelAttribute UserCreateEditDto user) {
-        userService.create(user);
-        return "redirect:/users/" + 25;
+        var dto = userService.create(user);
+        return "redirect:/users/" + dto.getId();
     }
 
     @PostMapping("/{id}/update")
@@ -42,4 +55,13 @@ public class UserController {
         userService.delete(id);
         return "redirect:/users";
     }
+
+    @GetMapping("/registration")
+    public String registration(Model model, @ModelAttribute("user") UserCreateEditDto userCreateEditDto) {
+        model.addAttribute("user", userCreateEditDto);
+        model.addAttribute("roles", Role.values());
+        model.addAttribute("companies", companyService.findAll());
+        return "user/registration";
+    }
+
 }
