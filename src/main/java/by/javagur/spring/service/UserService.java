@@ -1,12 +1,11 @@
 package by.javagur.spring.service;
 
 import by.javagur.spring.database.repository.UserRepository;
-import by.javagur.spring.dto.UserCreateEditDto;
-import by.javagur.spring.dto.UserReadDto;
-import by.javagur.spring.mapper.UserCreateEditMapper;
-import by.javagur.spring.mapper.UserReadMapper;
+import by.javagur.spring.dto.DtoToUser;
+import by.javagur.spring.dto.UserToDto;
+import by.javagur.spring.mapper.DtoToUserMapper;
+import by.javagur.spring.mapper.UserToDtoMapper;
 import lombok.RequiredArgsConstructor;
-import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,40 +21,40 @@ import java.util.Optional;
 public class UserService {
 
     private final UserRepository userRepository;
-    private final UserReadMapper userReadMapper;
-    private final UserCreateEditMapper userCreateEditMapper;
+    private final UserToDtoMapper userToDtoMapper;
+    private final DtoToUserMapper dtoToUserMapper;
 
-    public List<UserReadDto> findAll() {
+    public List<UserToDto> findAll() {
         return userRepository.findAll().stream()
-                .map(userReadMapper::map)
+                .map(userToDtoMapper::map)
                 .toList();
     }
 
-    public Optional<UserReadDto> findById(Long id){
+    public Optional<UserToDto> findById(Long id){
         return userRepository.findById(id)
-                .map(userReadMapper::map);
+                .map(userToDtoMapper::map);
 
     }
 
-    public Optional<UserReadDto> findByName(String userName){
-        return userRepository.findByUsername(userName).map(userReadMapper::map);
+    public Optional<UserToDto> findByName(String userName){
+        return userRepository.findByUsername(userName).map(userToDtoMapper::map);
     }
 
     @Transactional
-    public UserReadDto create(UserCreateEditDto userDto){
+    public UserToDto create(DtoToUser userDto){
         return Optional.of(userDto)
-                .map(userCreateEditMapper::map)
+                .map(dtoToUserMapper::map)
                 .map(userRepository::save)
-                .map(userReadMapper::map)
+                .map(userToDtoMapper::map)
                 .orElseThrow();
     }
 
     @Transactional
-    public Optional<UserReadDto> update(Long id, UserCreateEditDto userDto){
+    public Optional<UserToDto> update(Long id, DtoToUser userDto){
         return userRepository.findById(id)
-                .map(entity -> userCreateEditMapper.map(userDto, entity))
+                .map(entity -> dtoToUserMapper.map(userDto, entity))
                 .map(userRepository::saveAndFlush)
-                .map(userReadMapper::map);
+                .map(userToDtoMapper::map);
     }
 
     @Transactional

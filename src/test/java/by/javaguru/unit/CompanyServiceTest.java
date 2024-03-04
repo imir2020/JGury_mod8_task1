@@ -1,20 +1,7 @@
 package by.javaguru.unit;
 
-import by.javagur.spring.database.entity.Company;
-import by.javagur.spring.database.repository.CompanyRepository;
-import by.javagur.spring.dto.CompanyReadDto;
-import by.javagur.spring.listener.EntityEvent;
-import by.javagur.spring.service.CompanyService;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.context.ApplicationEventPublisher;
-
-import java.util.Collections;
-import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;

@@ -5,13 +5,13 @@ import lombok.Value;
 
 import java.time.LocalDate;
 
-
 @Value
-public class UserCreateEditDto {
+public class UserToDto {
+    Long id;
     String username;
     LocalDate birthDate;
     String firstname;
     String lastname;
     Role role;
-    Integer companyId;
+    CompanyToDto company;
 }

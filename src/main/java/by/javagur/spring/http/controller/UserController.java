@@ -1,9 +1,7 @@
 package by.javagur.spring.http.controller;
 
-import by.javagur.spring.database.entity.Company;
 import by.javagur.spring.database.entity.Role;
-import by.javagur.spring.dto.UserCreateEditDto;
-import by.javagur.spring.dto.UserReadDto;
+import by.javagur.spring.dto.DtoToUser;
 import by.javagur.spring.service.CompanyService;
 import by.javagur.spring.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -39,13 +37,13 @@ public class UserController {
     }
 
     @PostMapping
-    public String create(@ModelAttribute UserCreateEditDto user) {
+    public String create(@ModelAttribute DtoToUser user) {
         var dto = userService.create(user);
         return "redirect:/users/" + dto.getId();
     }
 
     @PostMapping("/{id}/update")
-    public String update(@PathVariable("id") Long id, @ModelAttribute UserCreateEditDto user) {
+    public String update(@PathVariable("id") Long id, @ModelAttribute DtoToUser user) {
         userService.update(id, user);
         return "redirect:/users/{id}";
     }
@@ -57,7 +55,7 @@ public class UserController {
     }
 
     @GetMapping("/registration")
-    public String registration(Model model, @ModelAttribute("user") UserCreateEditDto userCreateEditDto) {
+    public String registration(Model model, @ModelAttribute("user") DtoToUser userCreateEditDto) {
         model.addAttribute("user", userCreateEditDto);
         model.addAttribute("roles", Role.values());
         model.addAttribute("companies", companyService.findAll());

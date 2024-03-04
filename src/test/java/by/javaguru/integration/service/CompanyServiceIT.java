@@ -1,17 +1,7 @@
 package by.javaguru.integration.service;
 
-import by.javagur.spring.ApplicationRunner;
-import by.javagur.spring.config.DatabaseProperties;
-import by.javagur.spring.dto.CompanyReadDto;
-import by.javagur.spring.service.CompanyService;
 import by.javaguru.annotation.IT;
 import lombok.RequiredArgsConstructor;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.TestConstructor;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;

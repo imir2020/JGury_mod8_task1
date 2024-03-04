@@ -1,8 +1,8 @@
 package by.javagur.spring.mapper;
 
 import by.javagur.spring.database.entity.User;
-import by.javagur.spring.dto.CompanyReadDto;
-import by.javagur.spring.dto.UserReadDto;
+import by.javagur.spring.dto.CompanyToDto;
+import by.javagur.spring.dto.UserToDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -10,16 +10,16 @@ import java.util.Optional;
 
 @Component
 @RequiredArgsConstructor
-public class UserReadMapper implements Mapper<User, UserReadDto> {
+public class UserToDtoMapper implements Mapper<User, UserToDto> {
 
-    private final CompanyReadMapper companyReadMapper;
+    private final CompanyToDtoMapper companyToDtoMapper;
 
     @Override
-    public UserReadDto map(User object) {
-        CompanyReadDto company = Optional.ofNullable(object.getCompany())
-                .map(companyReadMapper::map)
+    public UserToDto map(User object) {
+        CompanyToDto company = Optional.ofNullable(object.getCompany())
+                .map(companyToDtoMapper::map)
                 .orElse(null);
-        return new UserReadDto(
+        return new UserToDto(
                 object.getId(),
                 object.getUsername(),
                 object.getBirthDate(),

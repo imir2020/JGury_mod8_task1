@@ -2,7 +2,6 @@ package by.javagur.spring.database.repository;
 
 import by.javagur.spring.database.entity.Role;
 import by.javagur.spring.database.entity.User;
-import by.javagur.spring.dto.UserReadDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
