@@ -1,29 +1,32 @@
 package by.javaguru.integration.service;
 
+import by.javagur.spring.services.impl.CompanyServiceImpl;
 import by.javaguru.annotation.IT;
 import lombok.RequiredArgsConstructor;
+import org.junit.jupiter.api.Test;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 @IT
 @RequiredArgsConstructor
-//@TestConstructor(autowireMode = TestConstructor.AutowireMode.ALL)
 public class CompanyServiceIT {
-//    private static final Integer COMPANY_ID = 1;
-//
-//    private final CompanyService companyService;
-//    private final DatabaseProperties databaseProperties;
-//
-//    @Test
-//    void findById() {
-//        var actualResult = companyService.findById(COMPANY_ID);
-//
-//        assertTrue(actualResult.isPresent());
-//
-//        var expectedResult = new CompanyReadDto(COMPANY_ID);
-//
-//        actualResult.ifPresent(actual -> assertEquals(expectedResult, actual));
-//    }
+
+    private final CompanyServiceImpl companyService;
+
+    @Test
+    void findById() {
+        Integer id = 1;
+        var actualResult = companyService.findById(id);
+        assertTrue(actualResult.isPresent());
+    }
+
+    @Test
+    void findAll(){
+        var list = companyService.findAll();
+        assertTrue(list.size()>0);
+        assertThat(list).hasSize(3);
+    }
 }

@@ -1,6 +1,7 @@
 package by.javagur.spring.dto;
 
 import by.javagur.spring.database.entity.Role;
+import lombok.Builder;
 import lombok.Value;
 
 import java.time.LocalDate;

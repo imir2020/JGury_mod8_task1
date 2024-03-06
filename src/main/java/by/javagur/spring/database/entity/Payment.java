@@ -20,7 +20,7 @@ public class Payment implements BaseEntity<Long> {
 
     private Integer amount;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     @JoinColumn(name = "receiver_id")
     private User receiver;
 }

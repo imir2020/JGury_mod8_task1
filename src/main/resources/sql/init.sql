@@ -27,7 +27,7 @@ CREATE TABLE IF NOT EXISTS payment
 (
     id BIGSERIAL PRIMARY KEY ,
     amount INT NOT NULL ,
-    receiver_id BIGINT NOT NULL REFERENCES users (id)
+    receiver_id BIGINT NOT NULL REFERENCES users (id) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS chat
@@ -39,7 +39,7 @@ CREATE TABLE IF NOT EXISTS chat
 CREATE TABLE IF NOT EXISTS users_chat
 (
     id BIGSERIAL PRIMARY KEY ,
-    user_id BIGINT NOT NULL REFERENCES users (id),
+    user_id BIGINT NOT NULL REFERENCES users (id) ON DELETE CASCADE,
     chat_id BIGINT NOT NULL REFERENCES chat (id),
     UNIQUE (user_id, chat_id)
 );

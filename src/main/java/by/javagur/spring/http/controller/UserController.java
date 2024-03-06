@@ -2,8 +2,8 @@ package by.javagur.spring.http.controller;
 
 import by.javagur.spring.database.entity.Role;
 import by.javagur.spring.dto.DtoToUser;
-import by.javagur.spring.service.CompanyService;
-import by.javagur.spring.service.UserService;
+import by.javagur.spring.services.impl.CompanyServiceImpl;
+import by.javagur.spring.services.impl.UserServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -15,10 +15,10 @@ import org.springframework.web.server.ResponseStatusException;
 @RequestMapping("/users")
 @RequiredArgsConstructor
 public class UserController {
-    private final UserService userService;
-    private final CompanyService companyService;
+    private final UserServiceImpl userService;
+    private final CompanyServiceImpl companyService;
 
-    @GetMapping("/users")//delete this path
+    @GetMapping("/users")
     public String findAll(Model model) {
         model.addAttribute("users", userService.findAll());
         return "user/users";
