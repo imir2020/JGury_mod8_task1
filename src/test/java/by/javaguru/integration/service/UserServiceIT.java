@@ -12,8 +12,7 @@ import org.junit.jupiter.api.Test;
 import java.time.LocalDate;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 @IT
 @RequiredArgsConstructor
@@ -39,6 +38,7 @@ public class UserServiceIT {
     void findByName() {
         String name = "Kate";
         var user = userService.findByName(name);
+        assertTrue(user.isPresent());
     }
 
     @Test
@@ -77,5 +77,8 @@ public class UserServiceIT {
         Long id = 1L;
         var isDelete = userService.delete(id);
         assertTrue(isDelete);
+        Long nextId = -5L;
+        var isNotDelete = userService.delete(nextId);
+        assertFalse(isNotDelete);
     }
 }
