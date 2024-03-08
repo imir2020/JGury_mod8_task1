@@ -61,6 +61,9 @@ public class UserController {
         if (bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute("user", user);
             redirectAttributes.addFlashAttribute("errors", bindingResult.getAllErrors());
+            if (bindingResult.getFieldError("birthDate")!=null){
+                return "redirect:/users/error_age";
+            }
             return "redirect:/users/registration";
         }
         var dto = userService.create(user);
@@ -88,6 +91,11 @@ public class UserController {
         model.addAttribute("roles", Role.values());
         model.addAttribute("companies", companyService.findAll());
         return "user/registration";
+    }
+
+    @GetMapping("/error_age")
+    public String ageError(){
+        return "error/error_age";
     }
 
 

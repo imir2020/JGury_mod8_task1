@@ -14,6 +14,9 @@ public class UserAgeValidator implements ConstraintValidator<Age, DtoToUser> {
 
     @Override
     public boolean isValid(DtoToUser value, ConstraintValidatorContext context) {
+        if (value.getBirthDate() == null) {
+            return false;
+        }
         return (Period.between(value.getBirthDate(), LocalDate.now()).getYears()) >= 18 ? true : false;
     }
 
