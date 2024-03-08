@@ -1,18 +1,24 @@
 package by.javagur.spring.services.impl;
 
+import by.javagur.spring.database.repository.QPredicates;
 import by.javagur.spring.database.repository.UserRepository;
 import by.javagur.spring.dto.DtoToUser;
+import by.javagur.spring.dto.UserFilter;
 import by.javagur.spring.dto.UserToDto;
 import by.javagur.spring.mapper.DtoToUserMapper;
 import by.javagur.spring.mapper.UserToDtoMapper;
 import by.javagur.spring.services.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+
+import static by.javagur.spring.database.entity.QUser.user;
 
 
 @Slf4j
@@ -24,6 +30,25 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final UserToDtoMapper userToDtoMapper;
     private final DtoToUserMapper dtoToUserMapper;
+
+    public Page<UserToDto> findAll(UserFilter userFilter, Pageable pageable) {
+        var predicate = QPredicates.builder()
+                .add(userFilter.firstname(), user.firstname::containsIgnoreCase)
+                .add(userFilter.lastname(), user.lastname::containsIgnoreCase)
+                .add(userFilter.birthDate(), user.birthDate::before)
+                .build();
+
+        return userRepository.findAll(predicate, pageable)
+                .map(userToDtoMapper::map);
+
+    }
+
+//    public List<UserToDto> findAll(UserFilter userFilter) {
+//        return userRepository.findAllByFilter(userFilter)
+//                .stream()
+//                .map(userToDtoMapper::map)
+//                .toList();
+//    }
 
     @Override
     public List<UserToDto> findAll() {
