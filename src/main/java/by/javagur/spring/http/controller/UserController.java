@@ -5,6 +5,7 @@ import by.javagur.spring.dto.DtoToUser;
 import by.javagur.spring.dto.PageResponse;
 import by.javagur.spring.dto.UserFilter;
 import by.javagur.spring.dto.UserToDto;
+import by.javagur.spring.http.exception.AgeException;
 import by.javagur.spring.services.impl.CompanyServiceImpl;
 import by.javagur.spring.services.impl.UserServiceImpl;
 import lombok.RequiredArgsConstructor;
@@ -14,11 +15,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
+import org.springframework.validation.ObjectError;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.util.List;
+import java.util.Objects;
 
 
 @Controller
@@ -59,15 +63,27 @@ public class UserController {
                          BindingResult bindingResult,
                          RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) {
+            if (isValidHasAge(bindingResult)) {
+                throw new AgeException();
+            }
+
             redirectAttributes.addFlashAttribute("user", user);
             redirectAttributes.addFlashAttribute("errors", bindingResult.getAllErrors());
-            if (bindingResult.getFieldError("birthDate")!=null){
-                return "redirect:/users/error_age";
-            }
+
             return "redirect:/users/registration";
         }
         var dto = userService.create(user);
         return "redirect:/users/" + dto.getId();
+    }
+
+    private boolean isValidHasAge(BindingResult bindingResult) {
+        List<ObjectError> errorsList = bindingResult.getAllErrors();
+        for (ObjectError error : errorsList) {
+            if (Objects.equals(error.getCode(), "Age")) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @PostMapping("/{id}/update")
@@ -79,7 +95,7 @@ public class UserController {
 
     @PostMapping("{id}/delete")
     public String delete(@PathVariable("id") Long id) {
-        if(!userService.delete(id)) {
+        if (!userService.delete(id)) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
         return "redirect:/users";
@@ -94,7 +110,7 @@ public class UserController {
     }
 
     @GetMapping("/error_age")
-    public String ageError(){
+    public String ageError() {
         return "error/error_age";
     }
 
